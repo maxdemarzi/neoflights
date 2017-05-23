@@ -26,7 +26,7 @@ POC Flight Search using Neo4j
 
         CALL com.maxdemarzi.import.flights("path to your flight csv file, see below for example");
         CALL com.maxdemarzi.import.flights("/Users/maxdemarzi/Projects/neoflights/src/main/resources/data/flights.csv")
-        
+
 7. Connect the airports via the flights.
         
         MATCH (a1:Airport)-[:HAS_DAY]->(ad1:AirportDay)-->
@@ -35,9 +35,8 @@ POC Flight Search using Neo4j
         WITH a1,  AVG(l.distance) AS avg_distance, a2, COUNT(*) AS flights
         MERGE (a1)-[r:FLIES_TO]->(a2)
         SET r.distance = avg_distance, r.flights = flights
-        
-        
-7. Create some data:
+
+8. OR you could skip 5-7 and just create the data like this:
 
         CREATE (iah:Airport {code:'IAH', latitude: 0.5233272799368780000000000, longitude: -1.66402114953545000000})
         CREATE (ord:Airport {code:'ORD', latitude: 0.7326649793031630000000000, longitude: -1.53422683082880000000})
@@ -74,8 +73,9 @@ POC Flight Search using Neo4j
         CREATE (leg2)-[:EWR_FLIGHT]->(ewr_20150901)
         CREATE (ewr_20150901)-[:HND_FLIGHT]->(leg4)
         CREATE (leg4)-[:HND_FLIGHT]->(hnd_20150902);
+                
                     
-6. Try a query or 2:
+9. Try a query:
 
-        CALL com.maxdemarzi.flights('DFW','HND','2015-09-01');
-        CALL com.maxdemarzi.flights('DFW','ORD','2015-09-01');
+        CALL com.maxdemarzi.flights('SEA','ORD','2016-04-28'); (if you imported)
+        CALL com.maxdemarzi.flights('DFW','ORD','2015-09-01'); (if you manually created it)

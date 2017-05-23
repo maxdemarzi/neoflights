@@ -25,16 +25,24 @@ public class DirectTest {
     @Test
     public void shouldFindDirectRoute() {
         HTTP.POST(neo4j.httpURI().resolve("/db/data/transaction/commit").toString(), SCHEMA);
+        HTTP.POST(neo4j.httpURI().resolve("/db/data/transaction/commit").toString(), CLEAR);
         HTTP.Response response = HTTP.POST(neo4j.httpURI().resolve("/db/data/transaction/commit").toString(), QUERY);
         ArrayList row = getResultRow(response);
 
         assertEquals(ANSWER_LIST, row);
     }
 
+    private static final HashMap<String, Object> CLEAR = new HashMap<String, Object>(){{
+        put("statements", new ArrayList<Map<String, Object>>() {{
+            add(new HashMap<String, Object>() {{
+                put("statement", "CALL com.maxdemarzi.clear_flight_cache()");
+            }});
+        }});
+    }};
 
     private static final HashMap<String, Object> PARAMS = new HashMap<String, Object>(){{
-        put("from", "IAH");
-        put("to", "EWR");
+        put("from", new ArrayList<String>() {{ add("IAH"); }});
+        put("to",  new ArrayList<String>() {{ add("EWR"); }});
         put("day", "2015-05-06");
     }};
 

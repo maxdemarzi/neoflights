@@ -24,9 +24,9 @@ public class TwoStopTest {
     @Test
     public void shouldFindTwoStopRoute() {
         HTTP.POST(neo4j.httpURI().resolve("/db/data/transaction/commit").toString(), SCHEMA);
+        HTTP.POST(neo4j.httpURI().resolve("/db/data/transaction/commit").toString(), CLEAR);
         HTTP.Response response = HTTP.POST(neo4j.httpURI().resolve("/db/data/transaction/commit").toString(), QUERY);
         ArrayList row = getResultRow(response);
-
         assertEquals(ANSWER_LIST, row);
     }
 
@@ -68,10 +68,17 @@ public class TwoStopTest {
             "CREATE (ewr_20150901)-[:HND_FLIGHT]->(leg4)" +
             "CREATE (leg4)-[:HND_FLIGHT]->(hnd_20150902)";
 
+    private static final HashMap<String, Object> CLEAR = new HashMap<String, Object>(){{
+        put("statements", new ArrayList<Map<String, Object>>() {{
+            add(new HashMap<String, Object>() {{
+                put("statement", "CALL com.maxdemarzi.clear_flight_cache()");
+            }});
+        }});
+    }};
 
     private static final HashMap<String, Object> PARAMS = new HashMap<String, Object>(){{
-        put("from", "DFW");
-        put("to", "HND");
+        put("from", new ArrayList<String>() {{ add("DFW"); }});
+        put("to",  new ArrayList<String>() {{ add("HND"); }});
         put("day", "2015-09-01");
     }};
 
