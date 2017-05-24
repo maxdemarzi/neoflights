@@ -38,19 +38,25 @@ class PathRestrictedExpander implements PathExpander<Double> {
                 }
 
                 if (path.length() < 2) {
-                    RelationshipType firstRelationshipType = RelationshipType.withName(((String)path.startNode().getProperty("key")).substring(0,3) + "_FLIGHT");
-                    RelationshipType[] valid = validRels.get(0).get(firstRelationshipType).toArray(new RelationshipType[validRels.get(0).get(firstRelationshipType).size()]);
+                    RelationshipType firstRelationshipType = RelationshipType.withName(((String)path.startNode()
+                            .getProperty("key")).substring(0,3) + "_FLIGHT");
+                    RelationshipType[] valid = validRels.get(0).get(firstRelationshipType)
+                            .toArray(new RelationshipType[validRels.get(0).get(firstRelationshipType).size()]);
                     return path.endNode().getRelationships(Direction.OUTGOING, valid);
                 } else {
                     int location = path.length() / 2;
 
                     if (((path.length() % 2) == 0) ) {
-                        return path.endNode().getRelationships(Direction.OUTGOING, validRels.get(location).get(path.lastRelationship().getType()).toArray(new RelationshipType[validRels.get(location).get(path.lastRelationship().getType()).size()]));
+                        return path.endNode().getRelationships(Direction.OUTGOING, validRels.get(location)
+                                .get(path.lastRelationship().getType())
+                                .toArray(new RelationshipType[validRels.get(location)
+                                        .get(path.lastRelationship().getType()).size()]));
                     } else {
                         Iterator<Relationship> iter = path.reverseRelationships().iterator();
                         iter.next();
                         RelationshipType lastRelationshipType = iter.next().getType();
-                        return path.endNode().getRelationships(Direction.OUTGOING, validRels.get(location).get(lastRelationshipType).toArray(new RelationshipType[validRels.get(location).get(lastRelationshipType).size()]));
+                        return path.endNode().getRelationships(Direction.OUTGOING, validRels.get(location).get(lastRelationshipType)
+                                .toArray(new RelationshipType[validRels.get(location).get(lastRelationshipType).size()]));
                     }
                 }
             }
