@@ -9,8 +9,6 @@ class PathRestrictedExpander implements PathExpander<Double> {
     private final String endCode;
     private final long stopTime;
     private final ArrayList<HashMap<RelationshipType, Set<RelationshipType>>> validRels;
-
-    // TODO: 3/8/17 Make this part of the query
     private static final Long minimumConnectTime = 30L * 60L; // 30 minutes
 
     public PathRestrictedExpander(String endCode, long stopTime, ArrayList<HashMap<RelationshipType, Set<RelationshipType>>> validRels) {
@@ -22,7 +20,7 @@ class PathRestrictedExpander implements PathExpander<Double> {
     @Override
     public Iterable<Relationship> expand(Path path, BranchState<Double> branchState) {
         // Stop if we are over our time limit
-        if (System.currentTimeMillis() < stopTime * 100000) {
+        if (System.currentTimeMillis() < stopTime) {
             if (path.length() < 8) {
 
                 if (((path.length() % 2) == 0) && ((String)path.endNode().getProperty("key")).substring(0,3).equals(endCode)) {

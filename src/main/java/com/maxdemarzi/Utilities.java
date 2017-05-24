@@ -4,7 +4,7 @@ import org.neo4j.graphdb.Node;
 
 class Utilities {
 
-
+    // Find the shortest distance between two airports and return 500 miles + 2x that distance.
     static Double getMaxDistance(Node departureAirport, Node arrivalAirport) {
         Double minDistance = GetMileage((Double)departureAirport.getProperty("latitude"),
                 (Double)departureAirport.getProperty("longitude"),
